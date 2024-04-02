@@ -38,6 +38,7 @@ stars.addEventListener("click",async function(event) {
     console.error(error);
   }
   
+  window.location.href = 'avg_stars.html';
 })
 
 
@@ -57,4 +58,5 @@ const saveStars = async (vote) => {
     alert("Error saving stars: " + error.message);
   }
 };
+
 
