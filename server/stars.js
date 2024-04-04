@@ -44,4 +44,21 @@ app.post("/new",(req,res) => {
   })
 })
 
+
+app.get("/average-stars",(req,res) => {
+  const pool = openDb()
+
+  pool.query('select ROUND(AVG(stars),1) AS avg_stars from stars',(error,result) => {
+    if (error) {
+      res.status(500).json({error:error.message})
+    }
+    res.status(200).json(result.rows)
+  })
+})
+
+    // const avgStars = result.rows[0].avg_stars;
+    // res.json({ avgStars });
+ 
+
+
 app.listen(port);

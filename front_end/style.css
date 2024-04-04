@@ -1,9 +1,9 @@
-* {
+/* * {
   margin: 0;
   padding: 0;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 40px;
-}
+} */
 
 /* body {
   display: flex;
@@ -16,6 +16,7 @@
 
 .stars {
   position: relative;
+  font-size: 40px;
 }
 
 .stars i {
@@ -30,4 +31,18 @@
 #score {
   position: relative;
   color: cornflowerblue;
+}
+
+
+/* style.css */
+
+/* 添加已填充和半填充星星的样式 */
+.fa-star.filled,
+.fa-star.half-filled {
+  color: gold; /* 已填充和半填充星星的颜色 */
+}
+
+/* 添加半填充星星的样式 */
+.fa-star.half-filled::before {
+  content: "\f089"; /* Unicode 图标代码，表示半星 */
 }

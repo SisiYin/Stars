@@ -1,0 +1,33 @@
+
+
+/* * {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 40px;
+} */
+
+.stars {
+  position: relative;
+  font-size: 40px;
+}
+
+.stars i {
+  color: #ddd;
+  
+
+}
+
+.stars .rated, .stars .half-rated {
+  color: gold;
+}
+
+.stars .half-rated::before {
+  content: '\f089';
+  overflow: hidden;
+  width: 50%;
+}
+
+.stars:hover i {
+  color: gold;
+}
