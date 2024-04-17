@@ -1,9 +1,15 @@
+window.history.pushState(null, '', '/post/2');
 const BACK_END_URL = 'http://localhost:3001'
 const stars = document.getElementsByClassName("stars")[0]
 const icons = document.getElementsByClassName("fa-star")
 let vote = 0
 const score = document.getElementById("score")
 score.innerText = vote
+
+// 获取当前页面的 URL
+const url = window.location.href;
+// 从 URL 中提取文章 ID
+const article_id = url.substring(url.lastIndexOf('/') + 1);
 
 
 
@@ -28,19 +34,39 @@ stars.addEventListener("click",async function(event) {
     }
     
   }
-  score.innerText = vote;
+  score.innerText = vote.toFixed(1);
 
- 
+  console.log(article_id);
   try {
     const response = await saveStars(vote);
+    console.log(vote);
     console.log(response);
   } catch (error) {
     console.error(error);
   }
   
-  window.location.href = 'avg_stars.html';
+  //window.location.href = 'avg_stars.html';
 })
 
+
+// 当鼠标悬停在星星上时，显示相应评分
+// stars.addEventListener('mouseover', (event) => {
+//   const star = event.target;
+//   if (star.classList.contains('fa-star')) {
+//     const value = parseInt(star.getAttribute('data-value'));
+//     renderStars(value);
+//   }
+// });
+// // 渲染星星的函数
+// function renderStars(value) {
+//   for (let i = 0; i < starIcons.length; i++) {
+//     if (i < value) {
+//       starIcons[i].classList.add('filled');
+//     } else {
+//       starIcons[i].classList.remove('filled');
+//     }
+//   }
+// }
 
 
 
@@ -51,7 +77,10 @@ const saveStars = async (vote) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ vote })
+      body: JSON.stringify({
+        article_id:article_id,
+        vote:vote 
+      })
     });
     return response.json();
   } catch (error) {

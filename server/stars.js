@@ -12,7 +12,7 @@ const openDb = () => {
   const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'stars',
+    database: 'comments',
     password: '251423',
     port: 5432
   })
@@ -33,8 +33,8 @@ app.get("/",(req,res) => {
 
 app.post("/new",(req,res) => {
   const pool = openDb()
-  //const { stars } = req.body; 
-  pool.query('INSERT INTO stars (stars) VALUES ($1) returning *', [req.body.vote],
+  const { article_id,vote } = req.body; 
+  pool.query('INSERT INTO stars (article_id,stars) VALUES ($1,$2) returning *', [article_id,vote],
   (error,result) => {
     if (error) {
       res.status(500).json({error: error.message})
@@ -44,17 +44,48 @@ app.post("/new",(req,res) => {
   })
 })
 
-
 app.get("/average-stars",(req,res) => {
   const pool = openDb()
 
-  pool.query('select ROUND(AVG(stars),1) AS avg_stars from stars',(error,result) => {
+  pool.query('select article_id,ROUND(AVG(stars),1) AS avg_stars from stars GROUP BY article_id',(error,result) => {
     if (error) {
       res.status(500).json({error:error.message})
     }
     res.status(200).json(result.rows)
   })
 })
+
+app.get("/:aid/rate",async(req,res) => {
+  const pool = openDb()
+  const article_id = req.params.aid;
+
+  // pool.query('select rate from post where article_id = &1',[article_id](error,result) => {
+  //   if (error) {
+  //     res.status(500).json({error:error.message})
+  //   }
+  //   res.status(200).json(result.rows)
+  // })
+
+  try{
+    const result = await pool.query('select rate from post where post_id = $1',[article_id]);
+   // const comments = result.rows;
+ 
+    res.status(200).json(result.rows);
+  } catch (error){
+    res.status(500).json({error: error.message})
+  }
+})
+
+// app.get("/average-stars",(req,res) => {
+//   const pool = openDb()
+
+//   pool.query('select article_id,ROUND(AVG(stars),1) AS avg_stars from stars GROUP BY article_id',(error,result) => {
+//     if (error) {
+//       res.status(500).json({error:error.message})
+//     }
+//     res.status(200).json(result.rows)
+//   })
+// })
 
     // const avgStars = result.rows[0].avg_stars;
     // res.json({ avgStars });

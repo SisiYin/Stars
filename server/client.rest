@@ -6,5 +6,6 @@ POST http://localhost:3001/new HTTP/1.1
 Content-Type: application/json
 
 {
-  "vote": "3.5"
+  "article_id":5,
+  "vote": "4.2"
 }
